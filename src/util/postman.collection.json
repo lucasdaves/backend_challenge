@@ -1,0 +1,129 @@
+{
+  "info": {
+    "_postman_id": "f5d0e2c8-8a8b-4a5f-9e6a-0d86b1f23a4a",
+    "name": "Places API",
+    "description": "Coleção gerada para a API de Lugares",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "gemini"
+  },
+  "item": [
+    {
+      "name": "Places",
+      "item": [
+        {
+          "name": "List all places",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/places",
+              "host": ["{{baseUrl}}"],
+              "path": ["places"]
+            },
+            "description": "Lista todos os lugares cadastrados (ordenado por 'goal' ASC)."
+          },
+          "response": []
+        },
+        {
+          "name": "Create new place",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country\": \"Brasil\",\n  \"city\": \"Jaguariúna\",\n  \"goal\": \"2026-05\",\n  \"imageUrl\": \"https://s3.amazonaws.com/prod-media.tripbig/images/headers/141/0_media_header.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/places",
+              "host": ["{{baseUrl}}"],
+              "path": ["places"]
+            },
+            "description": "Cria um novo lugar. 'country', 'city', e 'goal' (formato YYYY-MM) são obrigatórios. A combinação de 'country' e 'city' deve ser única."
+          },
+          "response": []
+        },
+        {
+          "name": "Get place by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/places/{{placeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["places", "{{placeId}}"]
+            },
+            "description": "Busca um lugar específico pelo seu ID (UUID)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update place",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"city\": \"Holambra\",\n  \"goal\": \"2027-09\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/places/{{placeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["places", "{{placeId}}"]
+            },
+            "description": "Atualiza um lugar. O body pode ser parcial, mas só pode conter 'city' e/ou 'goal' (formato YYYY-MM)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete place",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/places/{{placeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["places", "{{placeId}}"]
+            },
+            "description": "Remove um lugar da base de dados."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints relacionados a Lugares (Places)"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "placeId",
+      "value": "COPIE-UM-ID-AQUI",
+      "type": "string"
+    }
+  ]
+}

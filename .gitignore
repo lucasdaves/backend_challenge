@@ -1,0 +1,22 @@
+# .gitignore
+
+# Dependências
+node_modules/
+
+# Arquivos de Build
+dist/
+
+# Logs
+logs
+*.log
+
+# Arquivos de Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# # Variáveis de Ambiente
+# .env
+
+# Banco de Dados SQLite
+databases/
+*.sqlite
