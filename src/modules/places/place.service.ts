@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
 import { Place } from "./place.entity.js";
 import { PlaceRepository } from "./place.repository.js";
+import { AppError } from "../../util/app.error.js";
 
 export class PlaceService {
   private repo: PlaceRepository;
@@ -17,7 +18,20 @@ export class PlaceService {
     return this.repo.findById(id);
   }
 
-  create(data: Partial<Place>): Promise<Place> {
+  async create(data: Partial<Place>): Promise<Place> {
+    const entityList = await this.repo.findAll();
+
+    if (
+      entityList.find(
+        (entity) => entity.city === data.city && entity.country === data.country
+      )
+    ) {
+      throw new AppError(
+        "This 'country' and 'city' is already registered.",
+        409
+      );
+    }
+
     return this.repo.create(data);
   }
 

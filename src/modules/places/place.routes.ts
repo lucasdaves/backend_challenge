@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { DataSource } from "typeorm";
 import { PlaceController } from "./place.controller.js";
+import { authMiddleware } from "../../services/middlewares/auth.middleware.js";
 
 export const placeRoutes = (dataSource: DataSource) => {
   const router = Router();
@@ -13,6 +14,8 @@ export const placeRoutes = (dataSource: DataSource) => {
    *     summary: "Lista todos os lugares"
    *     tags:
    *       - Places
+   *     security:
+   *       - bearerAuth: []
    *     responses:
    *       '200':
    *         description: "Lista de lugares"
@@ -23,8 +26,11 @@ export const placeRoutes = (dataSource: DataSource) => {
    *               items:
    *                 $ref: '#/components/schemas/Place'
    */
-  router.get("/", (req: Request, res: Response, next: NextFunction) =>
-    controller.list(req, res, next)
+  router.get(
+    "/",
+    authMiddleware,
+    (req: Request, res: Response, next: NextFunction) =>
+      controller.list(req, res, next),
   );
 
   /**
@@ -34,6 +40,8 @@ export const placeRoutes = (dataSource: DataSource) => {
    *     summary: "Cria um novo lugar"
    *     tags:
    *       - Places
+   *     security:
+   *       - bearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -50,8 +58,11 @@ export const placeRoutes = (dataSource: DataSource) => {
    *       '400':
    *         description: "Requisição inválida (ex: body vazio)"
    */
-  router.post("/", (req: Request, res: Response, next: NextFunction) =>
-    controller.create(req, res, next)
+  router.post(
+    "/",
+    authMiddleware,
+    (req: Request, res: Response, next: NextFunction) =>
+      controller.create(req, res, next),
   );
 
   /**
@@ -61,6 +72,8 @@ export const placeRoutes = (dataSource: DataSource) => {
    *     summary: "Busca um lugar pelo ID"
    *     tags:
    *       - Places
+   *     security:
+   *       - bearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -79,8 +92,11 @@ export const placeRoutes = (dataSource: DataSource) => {
    *       '404':
    *         description: "Lugar não encontrado"
    */
-  router.get("/:id", (req: Request, res: Response, next: NextFunction) =>
-    controller.get(req, res, next)
+  router.get(
+    "/:id",
+    authMiddleware,
+    (req: Request, res: Response, next: NextFunction) =>
+      controller.get(req, res, next),
   );
 
   /**
@@ -90,6 +106,8 @@ export const placeRoutes = (dataSource: DataSource) => {
    *     summary: "Atualiza um lugar existente"
    *     tags:
    *       - Places
+   *     security:
+   *       - bearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -116,8 +134,11 @@ export const placeRoutes = (dataSource: DataSource) => {
    *       '400':
    *         description: "Requisição inválida"
    */
-  router.put("/:id", (req: Request, res: Response, next: NextFunction) =>
-    controller.update(req, res, next)
+  router.put(
+    "/:id",
+    authMiddleware,
+    (req: Request, res: Response, next: NextFunction) =>
+      controller.update(req, res, next),
   );
 
   /**
@@ -127,6 +148,8 @@ export const placeRoutes = (dataSource: DataSource) => {
    *     summary: "Remove um lugar"
    *     tags:
    *       - Places
+   *     security:
+   *       - bearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -141,8 +164,11 @@ export const placeRoutes = (dataSource: DataSource) => {
    *       '404':
    *         description: "Lugar não encontrado"
    */
-  router.delete("/:id", (req: Request, res: Response, next: NextFunction) =>
-    controller.remove(req, res, next)
+  router.delete(
+    "/:id",
+    authMiddleware,
+    (req: Request, res: Response, next: NextFunction) =>
+      controller.remove(req, res, next),
   );
 
   return router;

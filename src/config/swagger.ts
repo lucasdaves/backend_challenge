@@ -16,6 +16,13 @@ const options: swaggerJsdoc.Options = {
       },
     ],
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
       schemas: {
         Place: {
           type: "object",
@@ -37,6 +44,7 @@ const options: swaggerJsdoc.Options = {
             updatedAt: { type: "string", format: "date-time" },
           },
         },
+
         PlaceInput: {
           type: "object",
           required: ["country", "city", "goal"],
@@ -56,10 +64,49 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        AuthInput: {
+          type: "object",
+          required: ["email", "password"],
+          properties: {
+            email: {
+              type: "string",
+              format: "email",
+              example: "user@example.com",
+            },
+            password: {
+              type: "string",
+              format: "password",
+              example: "senha123",
+            },
+          },
+        },
+        UserResponse: {
+          type: "object",
+          description: "Resposta do usuário (sem a senha)",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            email: { type: "string", format: "email" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        LoginResponse: {
+          type: "object",
+          properties: {
+            message: { type: "string", example: "Login bem-sucedido!" },
+            token: {
+              type: "string",
+              example: "eyJhbGciOiJI...",
+            },
+          },
+        },
       },
     },
   },
-  apis: ["./src/modules/places/place.routes.ts"],
+  apis: [
+    "./src/modules/places/place.routes.ts",
+    "./src/modules/auth/auth.routes.ts",
+  ],
 };
 
 export const specs = swaggerJsdoc(options);

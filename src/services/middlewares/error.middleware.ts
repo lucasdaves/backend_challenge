@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { QueryFailedError } from "typeorm";
+import { AppError } from "../../util/app.error.js";
 
 export function errorMiddleware(
   err: Error,
@@ -7,6 +8,12 @@ export function errorMiddleware(
   res: Response,
   next: NextFunction
 ) {
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      message: err.message,
+    });
+  }
+
   if (err instanceof QueryFailedError) {
     const driverError = err.driverError;
 
@@ -15,7 +22,7 @@ export function errorMiddleware(
         const detail = driverError.message || "UNIQUE constraint failed";
 
         return res.status(409).json({
-          message: "Conflito: O recurso já existe.",
+          message: "Conflito: Violação de constraint no banco de dados.",
           detail: detail,
         });
       }

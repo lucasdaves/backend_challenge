@@ -8,4 +8,5 @@ export const config = {
   dbType: process.env.DB_TYPE || "sqlite",
   dbName: process.env.DB_NAME || "database.sqlite",
   dbSrc: process.env.DB_SRC || "./db/",
+  jwt_secret: process.env.JWT_SECRET || "",
 };
