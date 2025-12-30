@@ -19,20 +19,20 @@ export class PlaceService {
   }
 
   async create(data: Partial<Place>): Promise<Place> {
-    const entityList = await this.repo.findAll();
-
-    if (
-      entityList.find(
-        (entity) => entity.city === data.city && entity.country === data.country
-      )
-    ) {
-      throw new AppError(
-        "This 'country' and 'city' is already registered.",
-        409
-      );
+    try {
+      return await this.repo.create(data);
+    } catch (error: any) {
+      if (
+        error.code === "SQLITE_CONSTRAINT" &&
+        error.message.includes("UNIQUE constraint failed")
+      ) {
+        throw new AppError(
+          "This 'country' and 'city' is already registered.",
+          409
+        );
+      }
+      throw error;
     }
-
-    return this.repo.create(data);
   }
 
   update(id: string, data: Partial<Place>) {

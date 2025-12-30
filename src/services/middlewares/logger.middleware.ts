@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { config } from "../../config/config.js";
 
-export function loggerMiddleware(
+export const loggerMiddleware = function (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const timestamp = new Date().toISOString();
   const method = req.method;
@@ -16,10 +16,10 @@ export function loggerMiddleware(
       const message = res.statusMessage || "";
 
       console.log(
-        `[${timestamp}] ${method} ${url} - ${statusCode} - ${message}`,
+        `[${timestamp}] ${method} ${url} - ${statusCode} - ${message}`
       );
     });
   }
 
   next();
-}
+};

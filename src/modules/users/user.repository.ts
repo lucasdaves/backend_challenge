@@ -12,7 +12,11 @@ export class UserRepository {
     return this.repo.findOneBy({ email });
   }
 
-  create(data: Partial<User>) {
+  async create(data: Partial<User>) {
+    const existingUser = await this.findByEmail(data.email!);
+    if (existingUser) {
+      throw new Error("This 'email' is already registered.");
+    }
     const entity = this.repo.create(data);
     return this.repo.save(entity);
   }

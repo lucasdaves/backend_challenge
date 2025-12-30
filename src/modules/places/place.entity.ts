@@ -13,16 +13,16 @@ export class Place {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ type: "varchar", nullable: false })
   country: string;
 
-  @Column({ nullable: false })
+  @Column({ type: "varchar", nullable: false })
   city: string;
 
-  @Column({ type: "date", nullable: false })
+  @Column({ type: "datetime", nullable: false })
   goal: Date;
 
-  @Column({ name: "image_url", nullable: true })
+  @Column({ type: "varchar", name: "image_url", nullable: true })
   imageUrl: string;
 
   @CreateDateColumn({ name: "created_at" })

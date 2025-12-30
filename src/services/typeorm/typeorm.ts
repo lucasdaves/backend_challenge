@@ -4,11 +4,14 @@ import { Place } from "../../modules/places/place.entity.js";
 import { config } from "../../config/config.js";
 import { User } from "../../modules/users/user.entity.js";
 
+const isTestEnv = process.env.NODE_ENV === "test";
+const isDevEnv = process.env.NODE_ENV === "development";
+
 export const dataSource = new DataSource({
   type: config.dbType as any,
-  database: `${config.dbSrc}${config.dbName}` as string,
+  database: isTestEnv ? ":memory:" : `${config.dbSrc}${config.dbName}`,
   entities: [User, Place],
-  synchronize: config.nodeEnv === "development" ? true : false,
+  synchronize: isTestEnv || isDevEnv,
   logging: false,
   migrations: [],
   subscribers: [],

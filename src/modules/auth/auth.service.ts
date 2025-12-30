@@ -14,17 +14,16 @@ export class AuthService {
   }
 
   async register(data: Partial<User>): Promise<Omit<User, "password">> {
-    const existingEntity = await this.userRepo.findByEmail(data.email!);
-
-    if (existingEntity) {
-      throw new AppError("This 'email' is already registered.", 409);
+    try {
+      const user = await this.userRepo.create(data);
+      const { password, ...userWithoutPassword } = user as any;
+      return userWithoutPassword as Omit<User, "password">;
+    } catch (error: any) {
+      if (error.message === "This 'email' is already registered.") {
+        throw new AppError("This 'email' is already registered.", 409);
+      }
+      throw error;
     }
-
-    const user = await this.userRepo.create(data);
-
-    const { password, ...userWithoutPassword } = user as any;
-
-    return userWithoutPassword as Omit<User, "password">;
   }
 
   async login(email: string, pass: string): Promise<string | null> {

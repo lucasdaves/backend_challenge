@@ -19,12 +19,18 @@ export function errorMiddleware(
 
     if (driverError?.code === "SQLITE_CONSTRAINT") {
       if (driverError.message?.includes("UNIQUE constraint failed")) {
-        const detail = driverError.message || "UNIQUE constraint failed";
+        let message = "Conflict: This record already exists.";
 
-        return res.status(409).json({
-          message: "Conflito: Violação de constraint no banco de dados.",
-          detail: detail,
-        });
+        if (driverError.message.includes("users.email")) {
+          message = "This 'email' is already registered.";
+        } else if (
+          driverError.message.includes("places.country") ||
+          driverError.message.includes("places.city")
+        ) {
+          message = "This 'country' and 'city' is already registered.";
+        }
+
+        return res.status(409).json({ message });
       }
     }
   }

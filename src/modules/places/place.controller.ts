@@ -90,10 +90,14 @@ export class PlaceController {
         updateData.goal = new Date(`${data.goal}-01T00:00:00Z`);
       }
 
+      if (data.imageUrl !== undefined) {
+        updateData.imageUrl = data.imageUrl;
+      }
+
       if (Object.keys(updateData).length === 0) {
         return res.status(400).json({
           message:
-            "Bad Request: Only 'city' and 'goal' are allowed for update.",
+            "Bad Request: Only 'city', 'goal', and 'imageUrl' are allowed for update.",
         });
       }
 
